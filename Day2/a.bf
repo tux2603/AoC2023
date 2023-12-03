@@ -7,21 +7,22 @@ Memory cell 5 will be used to store the maximum number of green cubes in this ga
 Memory cell 6 will be used to store the maximum number of blue cubes in this game
 
 clear all the memory cells used for non scrap data
-+>[-]>[-]>[-]>[-]>[-]>[-]<<<<<<
++                                                       MC0
 
+,
 game loop
 starts with the pointer at memory cell 0
-[
-    read in the first five characters
-    ,.,.,.,.,.
+[                                                       MC0
+    read in the next four characters
+    ,,,,
 
     Move to the first scrap cell
     >>>> >>>[-]+                                        MC7
     
-    Parse the number with the result in                 MC8
+    Parse the number with the result in cell 8
     [[-]                                                MC7
         Read in the next digit
-        >,.                                              MC8
+        >>,                                             MC9
 
         Subtract 48 from the digit to get the actual number
         >>-[<+>-----]<---                               MC10
@@ -75,88 +76,84 @@ starts with the pointer at memory cell 0
     >[-]                                                MC11
 
     Move the result from 8 to 3
-    <<<[-<<<< <+>>>> >]                                 MC3
+    <<<[-<<<< <+>>>> >]                                 MC8
 
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%                   READ IN THE COLOR NUMBERS                    %%%%%
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-    ##########################################################################
-    #####                   READ IN THE COLOR NUMBERS                    #####
-    ##########################################################################
-
-
-
-    >>>> >>>[-]+                                        MC7
+    <[-]+                                               MC7
 
     Read in the color numbers until none are left
     [                                                   MC7    
         The first character will be a space and should be ignored
-        >,.[-]<                                          MC7  
+        [-]>,[-]+                                       MC8
         
-        Parse the number with the result in MC8
-        [[-]                                            MC7
+        Parse the number with the result in cell 9
+        [[-]                                            MC8
             Read in the next digit
-            <<<< <<<,.                                   MC0
-            [->>>> >>>+>>+<<<< <<<< <]                  MC0
-            >>>> >>>[-<<<< <<<+>>>> >>>]                MC7
+            >>,                                         MC10
 
             Subtract 48 from the digit to get the actual number
-            >>>>-[<+>-----]<---                         MC10
-            [-<->]<                                     MC9
+            >>-[<+>-----]<---                           MC11
+            [-<->]<                                     MC10
 
             Add the value if it is between zero and nine
             Break out of the number parsing logic if it isn't
-            [->+>+<<]                                   MC9
-            ++++++++++                                  MC9
-            
-            [-                                          MC9
-                <<[-]>>>                                MC10
-                [->>+>+<<<]                             MC10
-                +                                       MC10
-                >>>[[-]<<<[-]>>>]                       MC13
-                <<<                                     MC10
+            >>[-]                                       MC12
+            <<[->+>+<<]                                 MC10
+            ++++++++++                                  MC10
 
+            [-                                          MC10
+                <<[-]>>>                                MC11
+                [->>+>+<<<]                             MC11
+                +                                       MC11
+                >>>[[-]<<<[-]>>>]                       MC14
+                <<<                                     MC11
+                
                 This block only runs when the character is a digit
-                [-                                      MC10
-
-                    Clear 9 and 10 for use in the multiplication
-                    [-]                                 MC10
-                    <[-]                                MC9
+                [-                                      MC11
+                    Clear 10 and 11 for use in the multiplication
+                    [-]                                 MC11
+                    <[-]                                MC10
+                    
 
                     Multiply the current number by ten
-                    <                                   MC8
-                    [->+>+<<]                           MC8
-                    >>>>++++++++++                      MC12
-                    [-                                  MC12
-                        <<<[-<+>]                       MC9
-                        >[-<+>>>>+<<<]                  MC10
-                        >>>[-<<<+>>>]                   MC13              
-                    <]                                  MC12
-                    <<[-]                               MC10
-                    <[-]                                MC9
+                    <                                   MC9
+                    [->+>+<<]                           MC9
+                    >>>>++++++++++                      MC13
+                    
+                    [-                                  MC13
+                        <<<[-<+>]                       MC10
+                        >[-<+>>>>+<<<]                  MC11
+                        >>>[-<<<+>>>]                   MC14              
+                    <]                                  MC13
+                    <<[-]                               MC11
+                    <[-]                                MC10
 
                     Add the new number
-                    >>[-<<<+>>>]                        MC11
+                    >>[-<<<+>>>]                        MC12
 
                     Do clean up
-                    <<<<+>>                             MC9
-                    >>>+                                MC12
-                <<]                                     MC10 
+                    <<<<+>>                             MC10
+                    >>>+                                MC13
+                <<]                                     MC11 
 
-                >>-[-<<+>>]                             MC12
-            <<<]                                        MC9
-        <<]                                             MC7
+                >>-[-<<+>>]                             MC13
+            <<<]                                        MC10
+        <<]                                             MC8
 
-        If the character was not a number then 10 and 11 will be dirty
-        >>>[-]                                          MC10
-        >[-]                                            MC11
+        If the character was not a number then 11 and 12 will be dirty
+        >>>[-]                                          MC11
+        >[-]                                            MC12
 
-        8 now holds the number of some color of block
+        9 now holds the number of some color of block
         Copy that to 7 and get the color of block that we need
         to check
-        <<<[-<+>]                                       MC7
+        <<<[-<<+>>]                                      MC9
 
         Read in the next character to see if it is an r a b or a g
-        >,.                                              MC8
+        <,                                              MC8
 
         Subtract 98 from the character to see if it is a b
         >+[-[---<]>>-]<                                 MC11
@@ -189,7 +186,8 @@ starts with the pointer at memory cell 0
                 If cell 14 has a one that means that cell 11 is greater
                 <[-                                     MC14
                     Move the value from 11 to 17
-                    <<<[->>>> >>+<<<< <<]               MC11
+                    >>>[-]                              MC17
+                    <<<< <<[->>>> >>+<<<< <<]           MC11
                     >+                                  MC12
                 >>]                                     MC14
 
@@ -202,7 +200,8 @@ starts with the pointer at memory cell 0
                 If cell 15 has a one that means that cell 10 is greater
                 <[-                                     MC14
                     Move the value from 10 to 17
-                    <<<<[->>>> >>>+<<<< <<<]            MC10
+                    >>>[-]                              MC17
+                    <<<< <<<[->>>> >>>+<<<< <<<]        MC10
                     >>>+                                MC13
                 >]                                      MC14
 
@@ -221,13 +220,13 @@ starts with the pointer at memory cell 0
                     <[-]                                MC11
                     <[-]                                MC10
                 >>>> >>]                                MC16
-
+                
                 Store the maximum value found
                 <[-<<<< <+>>>> >]                       MC15
             <<<<]                                       MC11
 
             Skip the rest of the characters in the word blue
-            ,.,.,.[-]                                      MC11
+            ,,,[-]                                      MC11
             
             Copy the new max from cell 10 to cell 6
             <[-<<<<+>>>>]                               MC10
@@ -263,7 +262,8 @@ starts with the pointer at memory cell 0
                 If cell 14 has a one that means that cell 11 is greater
                 <[-                                     MC14
                     Move the value from 11 to 17
-                    <<<[->>>> >>+<<<< <<]               MC11
+                    >>>[-]                              MC17
+                    <<<< <<[->>>> >>+<<<< <<]           MC11
                     >+                                  MC12
                 >>]                                     MC14
 
@@ -276,7 +276,8 @@ starts with the pointer at memory cell 0
                 If cell 15 has a one that means that cell 10 is greater
                 <[-                                     MC14
                     Move the value from 10 to 17
-                    <<<<[->>>> >>>+<<<< <<<]            MC10
+                    >>>[-]                              MC17
+                    <<<< <<<[->>>> >>>+<<<< <<<]        MC10
                     >>>+                                MC13
                 >]                                      MC14
 
@@ -301,7 +302,7 @@ starts with the pointer at memory cell 0
             <<<<]                                       MC11
 
             Skip the rest of the characters in the word green
-            ,.,.,.,.[-]                                     MC11
+            ,,,,[-]                                     MC11
 
             Copy the new max from cell 10 to cell 5
             <[-<<<< <+>>>> >]                           MC10
@@ -339,7 +340,8 @@ starts with the pointer at memory cell 0
                 If cell 14 has a one that means that cell 11 is greater
                 <[-                                     MC14
                     Move the value from 11 to 17
-                    <<<[->>>> >>+<<<< <<]               MC11
+                    >>>[-]                              MC17
+                    <<<< <<[->>>> >>+<<<< <<]           MC11
                     >+                                  MC12
                 >>]                                     MC14
 
@@ -352,7 +354,8 @@ starts with the pointer at memory cell 0
                 If cell 15 has a one that means that cell 10 is greater
                 <[-                                     MC14
                     Move the value from 10 to 17
-                    <<<<[->>>> >>>+<<<< <<<]            MC10
+                    >>>[-]                              MC17
+                    <<<< <<<[->>>> >>>+<<<< <<<]        MC10
                     >>>+                                MC13
                 >]                                      MC14
 
@@ -377,24 +380,26 @@ starts with the pointer at memory cell 0
             <<<<]                                       MC11
 
             Skip the rest of the characters in the word red
-            ,.,.[-]                                       MC11
+            ,,[-]                                       MC11
 
             Copy the new max from cell 10 to cell 4
-            <[-<<<< <<+>>>> ><]                         MC10
+            <[-<<<< <<+>>>> >>]                         MC10
         <]                                              MC9
 
         All the colors are handled now
         <[-]                                            MC8
+        
 
         We want to continue if the nexr character is not a new line
-        ,.----------                                     MC8
-        [[-]<+>]                                         MC8
-    <]                                                   MC7
+        ,----------                                     MC8
+        
+        [[-]<+>]                                        MC8
+    <]                                                  MC7
 
     Check to see if any of the colors are over the maximum value
 
     The maximum value for blue is 14
-    [-]++++ ++++ ++++ ++                                 MC7
+    [-]++++ ++++ ++++ ++                                MC7
 
     >+                                                  MC8
     <+<+                                                MC6
@@ -412,7 +417,9 @@ starts with the pointer at memory cell 0
         >[[-]>-<]                                       MC9
         >[-<<+>>]                                       MC10
     <<]                                                 MC8
-    <[-]                                                MC7 
+    <[-]                                                MC7
+    
+    
     
     The maximum value for green is 13
     ++++ ++++ ++++ +                                    MC7
@@ -421,7 +428,7 @@ starts with the pointer at memory cell 0
     <+<<+                                               MC5
 
     >>>[                                                MC8
-        <<<->->>                                        MC8
+        <<<->>->                                        MC8
         [-]                                             MC8
         <<<[->>>>+>+<<<< <]                             MC5
         >>>> >[-<<<< <+>>>> >]                          MC10
@@ -433,18 +440,20 @@ starts with the pointer at memory cell 0
         >[[-]>-<]                                       MC9
         >[-<<+>>]                                       MC10
     <<]                                                 MC8
-    <[-]
+    <[-]                                                MC7
+    
+    
 
     The maximum value for red is 12
     ++++ ++++ ++++                                      MC7
 
     >+                                                  MC8
-    <+<<<+<<                                            MC4
+    <+<<<+                                              MC4
 
     >>>>[                                               MC8
-        <<<<->->>>                                      MC8
+        <<<<->>>->                                      MC8
         [-]                                             MC8
-        <<<<[->>>> >+>+<<<< <>]                         MC5
+        <<<<[->>>> >+>+<<<< <<]                         MC4
         >>>> >>[-<<<< <<+>>>> >>]                       MC10
         <[[-]<+>]                                       MC9
         <<[->>+>+<<<]                                   MC7
@@ -454,24 +463,37 @@ starts with the pointer at memory cell 0
         >[[-]>-<]                                       MC9
         >[-<<+>>]                                       MC10
     <<]                                                 MC8
-    <[-]
+    <[-]                                                MC7
 
     Accumulate cell 6 and 5 into cell 4
-    [-<+>]                                              MC6
+    <[-<+>]                                             MC6
     <[-<+>]                                             MC5
+    
+    
+    If MC4 has a value of zero then we don't add to the total
+    <[[-]>+<]+                                          MC4
+    >[[-]<[-]>]                                         MC5
 
-    If MC4 still has any value that means we need to add this game number to the total
     <[[-]                                               MC4
-
+        Print the hex of the game number
+        
         Add with carry
-        <<<[-                                           MC3
+        <[-                                             MC3
             <+                                          MC2
-            [->>>> >+>+<<<< <<]                         MC2
+            [->>>+>+<<<<]                               MC2
             +                                           MC2
-            >>>> >>[[-]<<<< <<[-]>>>> >>]               MC8
-            <<<< <<[-<+>]                               MC2
-            >>>> >[-<<<< <+>>>> >]                      MC7
-        <<<<]                                           MC3
-    ]                                                   MC4
+            >>>>[[-]<<<<->>>>]                          MC6
+            <<<<[-<+>]                                  MC2
+            >>>[-<<<+>>>]                               MC5
+        <<]                                             MC3
+    >]                                                  MC4
+    
 
-<<<<]                                                    MC0
+    Clear cells 3 to 6
+    <[-]                                                MC3
+    >[-]                                                MC4
+    >[-]                                                MC5
+    >[-]                                                MC6
+<<<< <<,]                                              MC0
+
+>.>.
